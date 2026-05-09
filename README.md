@@ -1,4 +1,4 @@
-# ⚡ FPGA Neural Activation Unit
+# FPGA Neural Activation Unit
 
 > Pipelined fixed-point (Q8.8) activation function hardware for neural network inference on FPGA.
 
@@ -6,7 +6,7 @@ Synthesizable Verilog RTL implementations of common neural network activation fu
 
 ---
 
-## ✨ Features
+## Features
 
 - **Q8.8 Fixed-Point Arithmetic** — 16-bit signed representation (8 integer + 8 fractional bits) balancing precision and area
 - **Pipelined Design** — deterministic latency with full throughput (1 result/cycle after pipeline fill)
@@ -16,7 +16,7 @@ Synthesizable Verilog RTL implementations of common neural network activation fu
 
 ---
 
-## 📦 Supported Activations
+## Supported Activations
 
 | Activation | Latency (cycles) | Type | Description |
 |:----------:|:-----------------:|:----:|:------------|
@@ -27,7 +27,7 @@ Synthesizable Verilog RTL implementations of common neural network activation fu
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ### Sigmoid Pipeline
 
@@ -41,8 +41,8 @@ Synthesizable Verilog RTL implementations of common neural network activation fu
                     Latency: 2 clock cycles
 ```
 
-- **Stage 0** — Compute absolute value, extract sign, generate 8-bit LUT address, detect saturation
-- **Stage 1** — Synchronous ROM read + symmetry correction (`σ(−x) = 1 − σ(x)`)
+- **Stage 0** — Compute absolute value, extract sign, generate 8-bit LUT address, detect saturation.
+- **Stage 1** — Synchronous ROM read + symmetry correction (`σ(−x) = 1 − σ(x)`).
 
 ### Tanh Pipeline (reuses Sigmoid)
 
@@ -99,7 +99,7 @@ fpga-neural-activation-unit/
 
 ---
 
-## 🔢 Fixed-Point Format: Q8.8
+## Fixed-Point Format: Q8.8
 
 All data paths use **Q8.8 signed fixed-point**:
 
@@ -108,37 +108,6 @@ All data paths use **Q8.8 signed fixed-point**:
  ┌──────┐   ┌──────────────┐   ┌──────────────┐
  │ Sign │   │ Integer (7b) │   │ Fraction (8b)│
  └──────┘   └──────────────┘   └──────────────┘
-```
-
-| Property | Value |
-|:---------|:------|
-| Total width | 16 bits |
-| Integer bits | 8 (signed) |
-| Fractional bits | 8 |
-| Range | −128.0 to +127.99609375 |
-| Resolution | 1/256 ≈ 0.00390625 |
-| 1.0 representation | `16'h0100` |
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **Icarus Verilog** (open-source) or **Vivado** / **Quartus** / **ModelSim**
-- GTKWave (optional, for waveform viewing)
-
-### Simulation (Icarus Verilog)
-
-```bash
-# Compile
-iverilog -o sim_out rtl/sigmoid.v rtl/sigmoid_lut.v rtl/tanh_act.v tb/tb_tanh.v
-
-# Run
-vvp sim_out
-
-# View waveforms
-gtkwave dump.vcd
 ```
 
 ### Synthesis
@@ -152,7 +121,7 @@ All modules are fully synthesizable. To target an FPGA:
 
 ---
 
-## 🔬 Sigmoid LUT Details
+## Sigmoid LUT Details
 
 The sigmoid lookup table stores `σ(x)` for `x ∈ [0, 8.0)` in 256 entries:
 
@@ -168,7 +137,7 @@ Negative inputs are handled via the **symmetry property**: `σ(−x) = 1 − σ(
 
 ---
 
-## 📐 Design Decisions
+## Design Decisions
 
 - **LUT over CORDIC** — For 8-bit fractional precision, a 256-entry LUT is more area-efficient and lower-latency than iterative CORDIC
 - **Sigmoid reuse in Tanh** — The identity `tanh(x) = 2σ(2x) − 1` avoids a separate tanh LUT entirely
