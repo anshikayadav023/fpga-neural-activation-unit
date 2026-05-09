@@ -71,7 +71,7 @@ Synthesizable Verilog RTL implementations of common neural network activation fu
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 fpga-neural-activation-unit/
@@ -146,7 +146,3 @@ Negative inputs are handled via the **symmetry property**: `σ(−x) = 1 − σ(
 
 
 ---
-
-<p align="center">
-  <i>Designed for efficient neural network inference at the hardware level.</i>
-</p>
