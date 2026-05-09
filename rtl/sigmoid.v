@@ -1,4 +1,5 @@
-// negative inputs handled via sig(-x) = 1 - sig(x)
+//y=sig(x)=1/(1+e^-x)
+// ig(-x) = 1 - sig(x)
 
 module sigmoid #(
     parameter data = 16,
